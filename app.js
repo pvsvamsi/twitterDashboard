@@ -35,6 +35,7 @@ app.controller('mainController', function ($scope, $location, twitterService) {
             David : {"Followers" : 1319, "No Of Tweets" : 2149, "Retweets" : 1152, "Likes" : 3304, "Replies" : 167, "Hashtags" : 247},
             Ravi : {"Followers" : 849, "No Of Tweets" : 418, "Retweets" : 1862, "Likes" : 948, "Replies" : 1063, "Hashtags" : 1203}};
         twitterService.setTwitterObjs(twitterObjs);
+		twitterService.setUserName($scope.userName);
     };
 });
 
@@ -43,6 +44,7 @@ app.controller('dashboardController', function ($scope, $location, twitterServic
     if(angular.equals({}, twitterObjs)){
         $location.path('/');
     }
+    $scope.userName = twitterService.getUserName();
     var twitterUsersArr = [];
     var freqData = [];
     (function () {
@@ -286,6 +288,7 @@ app.controller('dashboardController', function ($scope, $location, twitterServic
 
 app.service('twitterService', function ($http) {
     var twitterObjs = {};
+	var userName = "";
     url = "api.twitter.com/";
     this.getTweetsData = function(user){
        var getUrl = url + "&userId=" +user;
@@ -298,5 +301,11 @@ app.service('twitterService', function ($http) {
     this.getTwitterObjs = function () {
         return angular.copy(twitterObjs);
     }
+	this.setUserName = function(name){
+		userName = name;
+	}
+	this.getUserName = function(){
+		return userName;
+	}
 });
 
